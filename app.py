@@ -36,7 +36,7 @@ def addData():
 def addData():
     time = datetime.datetime.now()  # time the user submitted the report
     event = request.json['username']  # eg miss toilet paper, broken PC
-    location_id = 1
+    location_id = 1  # location id of the QR code; real location in a database
     res = {
         'time': time,
         'event': event,
