@@ -1,4 +1,5 @@
 from datetime import datetime
+from pickle import GET
 
 from flask import Flask, redirect, request
 import hashlib
@@ -15,6 +16,12 @@ RECEIVER_EMAIL = 'example.api.ucl.sender@gmail.com'
 PASSWORD = 'Example1234'
 
 app.config['DEBUG'] = True
+
+# Temp
+locations_id_map = {'id_1': {'facility_type': 'bathroom',
+                             'location': 'Wilkins'},
+                    'id_2': {'facility_type': 'classroom',
+                             'location': 'Main Quad Pop-up Hub Room 101'}}
 
 
 @app.route('/', methods=['GET'])
@@ -34,13 +41,37 @@ def addData():
     }
     return res, 200
 
-@app.route('/sendEmail', methods=['GET'])
-def email():
+app.route('/reportIssue', method=['GET'])
+def report():
+    id = request.json['id']
+    print(id)
+    # id = "id_1"
+    locations_id_map = locations_id_map[id]
+    #params
+    date = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    facility_type = locations_id_map['facility_type']
+    location = locations_id_map['location']
+    event = "tissue"
+    userEmail = "a@example.com"
+
     email = emailService(RECEIVER_EMAIL, RECEIVER_EMAIL, PASSWORD)
-    message = emailMessageFormat("john@gmail.com", datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), "Location", "event", "bathroom")
+    message = emailMessageFormat(userEmail, date, location, event, facility_type)
     print(message.getMessage())
     email.send("Report Issue", message.getMessage())
-    return "done", 200
+
+    return 'done', 200
+
+
+
+
+
+# @app.route('/sendEmail', methods=['GET'])
+# def email():
+#     email = emailService(RECEIVER_EMAIL, RECEIVER_EMAIL, PASSWORD)
+#     message = emailMessageFormat("john@gmail.com", datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), "Location", "event", "bathroom")
+#     print(message.getMessage())
+#     email.send("Report Issue", message.getMessage())
+#     return "done", 200
 
 # @app.route('/rToilet', methods=['POST'])
 # def t():
