@@ -41,6 +41,20 @@ def addData():
     return res, 200
 
 
+# Posting data to the client
+@app.route('/oauth', methods=['POST'])
+def addData():
+    '''Data that we need from the user.'''
+    username = request.json['username']
+    password = request.json['password']
+    print(request)
+    res = {
+        'username': username,
+        'password': password
+    }
+    return res, 200
+
+
 @app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
