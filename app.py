@@ -1,7 +1,13 @@
-from flask import Flask, request
+from flask import Flask, redirect, request
 import hashlib
 
 app = Flask(__name__)
+
+API_TOKEN = 'uclapi-c534250c5533a5e-969273a8d8b716f-172fc10b1563d07-72b9a381d300f82'
+CLIENT_ID = '7083760871512299.0586240432827629'
+CLIENT_SECRET = '5110d3ae18ef449a6a4f2a9a489f071ac5c03e8eb3acb05d9a7081067589f36d'
+
+app.config['DEBUG'] = True
 
 @app.route('/', methods=['POST'])
 def hello():
