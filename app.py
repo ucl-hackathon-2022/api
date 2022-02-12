@@ -41,16 +41,16 @@ def addData():
     }
     return res, 200
 
-app.route('/reportIssue', method=['GET'])
+@app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
     print(id)
     # id = "id_1"
-    locations_id_map = locations_id_map[id]
+    locations_map = locations_id_map[id]
     #params
-    date = datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
-    facility_type = locations_id_map['facility_type']
-    location = locations_id_map['location']
+    date = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
+    facility_type = locations_map['facility_type']
+    location = locations_map['location']
     event = "tissue"
     userEmail = "a@example.com"
 
