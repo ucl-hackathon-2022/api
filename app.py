@@ -1,5 +1,6 @@
 from flask import Flask, redirect, request
 import hashlib
+import datetime
 
 app = Flask(__name__)
 
@@ -16,12 +17,29 @@ def hello():
 #for posting data to the client
 @app.route('/callbackParam', methods=['POST'])
 def addData():
+    
     username = request.json['username']
     password = request.json['password']
+    print(request)
     res = {
         'username': username,
         'password': password
     }
+    return res, 200
+
+@app.route('/rToilet', methods=['POST'])
+def addData():
+    time = datetime.datetime.now()
+    event = request.json['username']
+    #toilet id
+    id = 1
+    res = {
+        'time': time,
+        'event': event,
+        'email': 'abc@example.com',
+        'toiletId': 5
+    }
+    email = email()
     return res, 200
 
 if __name__ == '__main__':
