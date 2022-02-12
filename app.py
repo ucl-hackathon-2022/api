@@ -1,9 +1,8 @@
-from datetime import datetime
-from pickle import GET
-
-from flask import Flask, redirect, request
 import hashlib
 
+from datetime import datetime
+from pickle import GET
+from flask import Flask, redirect, request
 from src.email import emailService, emailMessageFormat
 
 app = Flask(__name__)
@@ -41,13 +40,14 @@ def addData():
     }
     return res, 200
 
+
 @app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
     print(id)
     # id = "id_1"
     locations_map = locations_id_map[id]
-    #params
+    # Parameters to pass
     date = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     facility_type = locations_map['facility_type']
     location = locations_map['location']
@@ -60,10 +60,6 @@ def report():
     email.send("Report Issue", message.getMessage())
 
     return 'done', 200
-
-
-
-
 
 # @app.route('/sendEmail', methods=['GET'])
 # def email():
