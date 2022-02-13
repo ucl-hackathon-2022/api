@@ -2,6 +2,8 @@ from datetime import datetime
 from pickle import GET
 from flask import Flask, redirect, request
 from src.email import emailService, emailMessageFormat
+from match_location_id import locations_id_map
+import requests
 
 app = Flask(__name__)
 
@@ -14,11 +16,11 @@ PASSWORD = 'Example1234'
 
 app.config['DEBUG'] = True
 
-# Temp
-locations_id_map = {'id_1': {'facility_type': 'bathroom',
-                             'location': 'Wilkins'},
-                    'id_2': {'facility_type': 'classroom',
-                             'location': 'Main Quad Pop-up Hub Room 101'}}
+# # Temp
+# locations_id_map = {'id_1': {'facility_type': 'bathroom',
+#                              'location': 'Wilkins'},
+#                     'id_2': {'facility_type': 'classroom',
+#                              'location': 'Main Quad Pop-up Hub Room 101'}}
 
 
 @app.route('/', methods=['GET'])
@@ -46,48 +48,70 @@ url = f"https://uclapi.com/oauth/authorise/?client_id={CLIENT_ID}&state=1"
 def uclapi_login():
     return redirect(url)
 
-@app.route('/oauth', methods=['GET'])
+# # Posting data to the client
+# @app.route('/complete')
+# def uclapi_complete():
+#     return redirect(url)
+
+@app.route('/callback')
 def receive_callback():
-    # receive parameters
-    result = request.json['result']
+    # receive parameters 
+    # result = request.args.get('result')
     code = request.json['code']
-    state = request.json['state']
-
-    print(request)
-    print(result)
-    print('code', code)
-    if result == 1:
-        return state, 200
-    print(request)
-    # do something with these parameters
-    # e.g. request an auth token from /oauth/token
-    '''
+    # state = request.args.get('state')
     params = {
-        "client_id": "123.456",
-        "code": "1",
-        "client_secret": "secret",
+        "client_secret": CLIENT_SECRET,
+        "client_id ": CLIENT_ID,
+        "code": code,
     }
-    r = request.get("https://uclapi.com/oauth/token", params=params)
+    r = requests.get('https://uclapi.com/oauth/token', params=params)
     print(r.json())
-    '''
-    return code, 200
+    # e.g. request an auth token from /oauth/token
+    return 'done'
+
+# @app.route('/oauth', methods=['GET'])
+# def receive_callback():
+#     # receive parameters
+#     result = request.json['result']
+#     code = request.json['code']
+#     state = request.json['state']
+
+#     print(request)
+#     print(result)
+#     print('code', code)
+#     if result == 1:
+#         return state, 200
+#     print(request)
+#     # do something with these parameters
+#     # e.g. request an auth token from /oauth/token
+#     '''
+#     params = {
+#         "client_id": "123.456",
+#         "code": "1",
+#         "client_secret": "secret",
+#     }
+#     r = request.get("https://uclapi.com/oauth/token", params=params)
+#     print(r.json())
+#     '''
+#     return code, 200
 
 
-def addData2():
-    '''Data that we need from the user.'''
-    username = request.json['username']
-    password = request.json['password']
-    print(request)
-    res = {
-        'username': username,
-        'password': password
-    }
-    return res, 200
+# def addData2():
+#     '''Data that we need from the user.'''
+#     username = request.json['username']
+#     password = request.json['password']
+#     print(request)
+#     res = {
+#         'username': username,
+#         'password': password
+#     }
+#     return res, 200
 
 
 @app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
+    event = request.json['event']
     print(id)
     # id = "id_1"
     locations_map = locations_id_map[id]
@@ -95,7 +119,7 @@ def report():
     date = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     facility_type = locations_map['facility_type']
     location = locations_map['location']
-    event = "tissue"
+    # event = "tissue"
     userEmail = "a@example.com"
 
     email = emailService(RECEIVER_EMAIL, RECEIVER_EMAIL, PASSWORD)
