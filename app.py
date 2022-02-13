@@ -4,6 +4,8 @@ from flask import Flask, redirect, request
 from src.email import emailService, emailMessageFormat
 from match_location_id import locations_id_map
 import requests
+import gunicorn
+
 
 app = Flask(__name__)
 
