@@ -1,26 +1,34 @@
 # UCL Resolve Backend
 This is the api section github repository for UCL Resolve, Team 10's project for UCL Portico 5.0. 
 The api hosted at [heroku](https://ucl-report-estate.herokuapp.com/)
-The frontend section is located at [Here](https://github.com/ucl-hackathon-2022/frontend)
+The frontend section is located at [Here](https://github.com/ucl-hackathon-2022/frontend).
 
-Below is the procedure for installing and running the project
+Below is the procedure for installing and running the backend part of the project.
 
-## Installation
+## Install
 
-A virtual environment should be set up, and can be done so using the following shell commands:
+A virtual environment should be set up. To set it up follow the shell commands below:
+
 ### Linux / iOS
-`python -m venv venv`
-`source venv/bin/activate`
+```
+$ python -m venv venv
+$ source venv/bin/activate
+```
+
 ### Windows
-`venv\Scripts\activate`
+```
+$ venv\Scripts\activate
+```
 
-After setting up the virtual environment, Flask and other depencies can by installed:
+After setting up the virtual environment, install flask and other dependencies:
 
-then install flask and other dependency by typing
+``` 
+$ pip install -r requirements.txt
+```
 
-` pip install -r requirements.txt`
+## Run the Application
 
-## Running the Application
-
-The Application by run by using the following shell command:
-`flask run`
+To run UCL Resolve, type the following shell command:
+```
+$ flask run
+```
