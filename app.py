@@ -1,9 +1,6 @@
 from datetime import datetime
 from pickle import GET
-
 from flask import Flask, redirect, request
-import hashlib
-
 from src.email import emailService, emailMessageFormat
 
 app = Flask(__name__)
@@ -41,13 +38,60 @@ def addData():
     }
     return res, 200
 
+
+url = f"https://uclapi.com/oauth/authorise/?client_id={CLIENT_ID}&state=1"
+
+# Posting data to the client
+@app.route('/login')
+def uclapi_login():
+    return redirect(url)
+
+@app.route('/oauth', methods=['GET'])
+def receive_callback():
+    # receive parameters
+    result = request.json['result']
+    code = request.json['code']
+    state = request.json['state']
+
+    print(request)
+    print(result)
+    print('code', code)
+    if result == 1:
+        return state, 200
+    print(request)
+    # do something with these parameters
+    # e.g. request an auth token from /oauth/token
+    '''
+    params = {
+        "client_id": "123.456",
+        "code": "1",
+        "client_secret": "secret",
+    }
+    r = request.get("https://uclapi.com/oauth/token", params=params)
+    print(r.json())
+    '''
+    return code, 200
+
+
+def addData2():
+    '''Data that we need from the user.'''
+    username = request.json['username']
+    password = request.json['password']
+    print(request)
+    res = {
+        'username': username,
+        'password': password
+    }
+    return res, 200
+
+
 @app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
     print(id)
     # id = "id_1"
     locations_map = locations_id_map[id]
-    #params
+    # Parameters to pass
     date = datetime.now().strftime("%d/%m/%Y, %H:%M:%S")
     facility_type = locations_map['facility_type']
     location = locations_map['location']
@@ -60,10 +104,6 @@ def report():
     email.send("Report Issue", message.getMessage())
 
     return 'done', 200
-
-
-
-
 
 # @app.route('/sendEmail', methods=['GET'])
 # def email():
