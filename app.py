@@ -95,19 +95,6 @@ def receive_callback():
 #     '''
 #     return code, 200
 
-
-# def addData2():
-#     '''Data that we need from the user.'''
-#     username = request.json['username']
-#     password = request.json['password']
-#     print(request)
-#     res = {
-#         'username': username,
-#         'password': password
-#     }
-#     return res, 200
-
-
 @app.route('/report', methods=['POST'])
 def report():
     id = request.json['id']
@@ -136,20 +123,6 @@ def report():
 #     print(message.getMessage())
 #     email.send("Report Issue", message.getMessage())
 #     return "done", 200
-
-# @app.route('/rToilet', methods=['POST'])
-# def t():
-#     time = datetime.datetime.now()  # time the user submitted the report
-#     event = request.json['username']  # eg miss toilet paper, broken PC
-#     location_id = 1
-#     res = {
-#         'time': time,
-#         'event': event,
-#         'email': 'abc@example.com',
-#         'location_id': location_id
-#     }
-#     return res, 200
-
 
 if __name__ == '__main__':
     app.run()
