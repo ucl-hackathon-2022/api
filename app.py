@@ -1,6 +1,7 @@
 from datetime import datetime
 from pickle import GET
 from flask import Flask, redirect, request
+from flask_cors import CORS
 from src.email import emailService, emailMessageFormat
 from match_location_id import locations_id_map
 import requests
@@ -8,6 +9,8 @@ import gunicorn
 
 
 app = Flask(__name__)
+cors = CORS(app)
+
 
 # Global variables
 API_TOKEN = 'uclapi-c534250c5533a5e-969273a8d8b716f-172fc10b1563d07-72b9a381d300f82'

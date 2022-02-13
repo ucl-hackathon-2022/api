@@ -7,6 +7,6 @@ $ venv\Scripts\activate
 
 then install flask 
 
-$ pip install -r requirement.txt
+$ pip install -r requirements.txt
 
 flask run
